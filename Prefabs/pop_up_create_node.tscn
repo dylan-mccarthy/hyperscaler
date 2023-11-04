@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://yj2thichdcsg"]
+
+[ext_resource type="Script" path="res://Scripts/CreateItemPopUp.cs" id="1_14xh1"]
+[ext_resource type="Texture2D" uid="uid://b426ikhy6t4dh" path="res://Graphics/Backgrounds/Background.png" id="2_0tnni"]
+
+[node name="PopUp" type="Panel"]
+offset_left = 428.0
+offset_top = 237.0
+offset_right = 649.0
+offset_bottom = 379.0
+script = ExtResource("1_14xh1")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 221.0
+offset_bottom = 142.0
+texture = ExtResource("2_0tnni")
+expand_mode = 2
+
+[node name="ValuesContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 212.0
+offset_bottom = 134.0

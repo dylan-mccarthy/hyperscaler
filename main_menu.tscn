@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://c81pgyfkqu1wb"]
+
+[ext_resource type="Script" path="res://Scripts/MainMenu.cs" id="1_ltcxm"]
+
+[node name="MainMenu" type="Node2D"]
+
+[node name="Menu" type="Panel" parent="."]
+offset_left = 368.0
+offset_top = 137.0
+offset_right = 728.0
+offset_bottom = 493.0
+script = ExtResource("1_ltcxm")
+
+[node name="StartGame" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 103.0
+offset_right = 225.0
+offset_bottom = 134.0
+text = "Start Game"
+
+[node name="Options" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 142.0
+offset_top = 142.0
+offset_right = 212.0
+offset_bottom = 173.0
+text = "Options
+"
+
+[node name="Exit" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 181.0
+offset_right = 197.0
+offset_bottom = 212.0
+text = "Exit"
+
+[connection signal="button_down" from="Menu/StartGame" to="Menu" method="OnStartButtonPressed"]
+[connection signal="pressed" from="Menu/Exit" to="Menu" method="OnExitButtonPressed"]
