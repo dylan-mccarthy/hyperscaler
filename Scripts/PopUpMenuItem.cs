@@ -30,4 +30,9 @@ public partial class PopUpMenuItem : Control
 	{
 		return new string[] { _label.Text, _textEdit.Text };
 	}
+
+	public void DrawRedBox()
+	{
+		_textEdit.AddThemeColorOverride("background_color", new Color(200, 0, 0, 160));
+	}
 }

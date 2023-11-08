@@ -49,6 +49,11 @@ public partial class NetworkNode : Placeable, IDraggable
 
 	public void Place(){
 		IsShadow = false;
+		OpenPopUp();
+	}
+
+	private void OpenPopUp()
+	{
 		popUpMenu = GD.Load<PackedScene>("res://Prefabs/PopUpMenu.tscn").Instantiate() as PopUpMenu;
 		popUpMenu.Size = new Vector2(360,202);
 		Screen.AddChild(popUpMenu);
@@ -59,6 +64,7 @@ public partial class NetworkNode : Placeable, IDraggable
 		popUpMenu.CancelButton.Pressed += OnPopUpMenuCancel;
 		popUpMenu.AddPopUpMenuItem("networkName","Network Name", NetworkName);
 		popUpMenu.AddPopUpMenuItem("addressSpace","Address Space", AddressSpace);
+		gameManager.PopUpActive = true;
 	}
 
 	private void OnPopUpMenuSubmit(){
@@ -73,11 +79,23 @@ public partial class NetworkNode : Placeable, IDraggable
 				addressSpaceLabel.Text = "[center]" + AddressSpace + "[/center]";
 			}
 		}
-		popUpMenu.Close();
+		if(NetworkName == ""){
+			popUpMenu.DrawRedBox("networkName");
+		}
+		if(AddressSpace == ""){
+			popUpMenu.DrawRedBox("addressSpace");
+		}
+
+		if(NetworkName != "" && AddressSpace != "")
+		{
+			popUpMenu.Close();
+			gameManager.PopUpActive = false;
+		}
 	}
 
 	private void OnPopUpMenuCancel(){
 		popUpMenu.Close();
+		gameManager.PopUpActive = false;
 	}
 
     public void HasFocus()
@@ -97,7 +115,7 @@ public partial class NetworkNode : Placeable, IDraggable
 		{
 			return;
 		}
-		if(IsFocus && !IsShadow)
+		if(IsFocus && !IsShadow && !gameManager.PopUpActive)
 		{
 			var mouseEvent = @event as InputEventMouseButton;
 			if(mouseEvent is null)
@@ -107,7 +125,7 @@ public partial class NetworkNode : Placeable, IDraggable
 			if(mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed){
 				GD.Print("Clicked");
 				//Create new popup
-				Place();
+				OpenPopUp();
 			}
 
 		}

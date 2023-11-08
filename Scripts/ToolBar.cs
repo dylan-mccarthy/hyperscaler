@@ -38,6 +38,6 @@ public partial class ToolBar : Panel
 	public void OnIconButtonUp(string NodePath)
 	{
 		GD.Print("Icon Button Up");
-		_draggedNode.IsShadow = false;
+		_draggedNode.Place();
 	}
 }

@@ -53,4 +53,18 @@ public partial class PopUpMenu : Control
 	public void Close(){
 		QueueFree();
 	}
+
+	public void DrawRedBox(string menuName)
+	{
+		foreach (var item in _vContainer.GetChildren())
+		{
+			if (item is PopUpMenuItem)
+			{
+				if ((item as PopUpMenuItem).Name == menuName)
+				{
+					(item as PopUpMenuItem).DrawRedBox();
+				}
+			}
+		}
+	}
 }
