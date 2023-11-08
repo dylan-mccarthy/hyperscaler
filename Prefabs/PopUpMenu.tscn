@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://jpghyp7t5tfj"]
+
+[ext_resource type="Texture2D" uid="uid://by14jguxo6sxe" path="res://Graphics/Backgrounds/BackgroundPopUp.png" id="1_elwan"]
+[ext_resource type="Script" path="res://Scripts/PopUpMenu.cs" id="1_vxpx0"]
+
+[node name="PopUpMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -792.0
+offset_bottom = -446.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vxpx0")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 360.0
+offset_bottom = 202.0
+texture = ExtResource("1_elwan")
+expand_mode = 1
+
+[node name="VContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -164.0
+offset_top = -85.0
+offset_right = 166.0
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubmitButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 94.0
+offset_top = 160.0
+offset_right = 157.0
+offset_bottom = 191.0
+text = "Submit"
+
+[node name="CancelButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 189.0
+offset_top = 160.0
+offset_right = 249.0
+offset_bottom = 191.0
+text = "Cancel"

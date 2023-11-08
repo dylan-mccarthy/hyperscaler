@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class NetworkNode : Node2D, IDraggable
+public partial class NetworkNode : Placeable, IDraggable
 {
 	[ExportGroup("Labels")]
 	[Export]
@@ -12,6 +12,9 @@ public partial class NetworkNode : Node2D, IDraggable
 	public string AddressSpace { get; set; }
 
 	private Node2D Screen;
+	private GameManager gameManager;
+
+	private PopUpMenu popUpMenu;
 
 	public List<string> ConnectedDevices { get; set; }
 	public List<string> Subnets { get; set; }
@@ -20,11 +23,6 @@ public partial class NetworkNode : Node2D, IDraggable
 	[Export]
 	public RichTextLabel addressSpaceLabel;
 
-	[Export]
-	public bool IsShadow { get; set; }
-
-	public bool isFocus { get; set; } = false;
-
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -32,6 +30,11 @@ public partial class NetworkNode : Node2D, IDraggable
 		{
 			Screen = GetNode<Node2D>("/root/GameScreen");
 		}
+		if (gameManager == null)
+		{
+			gameManager = GetNode<GameManager>("/root/GameScreen/GameManager");
+		}
+		gameManager.RegisterPlaceableNode(this);
 		networkNameLabel.Text = "[center]" + NetworkName + "[/center]";
 		addressSpaceLabel.Text = "[center]" + AddressSpace + "[/center]";
 	}
@@ -46,18 +49,47 @@ public partial class NetworkNode : Node2D, IDraggable
 
 	public void Place(){
 		IsShadow = false;
+		popUpMenu = GD.Load<PackedScene>("res://Prefabs/PopUpMenu.tscn").Instantiate() as PopUpMenu;
+		popUpMenu.Size = new Vector2(360,202);
+		Screen.AddChild(popUpMenu);
+		//Center popup
+		var screenSize = GetViewportRect().Size;
+		popUpMenu.Position = new Vector2(screenSize.X/2 - popUpMenu.Size.X/2, screenSize.Y/2 - popUpMenu.Size.Y/2);
+		popUpMenu.SubmitButton.Pressed += OnPopUpMenuSubmit;
+		popUpMenu.CancelButton.Pressed += OnPopUpMenuCancel;
+		popUpMenu.AddPopUpMenuItem("networkName","Network Name", NetworkName);
+		popUpMenu.AddPopUpMenuItem("addressSpace","Address Space", AddressSpace);
 	}
 
-	public void HasFocus()
+	private void OnPopUpMenuSubmit(){
+		var values = popUpMenu.GetValues();
+		foreach(var item in values){
+			if(item[0] == "Network Name"){
+				NetworkName = item[1];
+				networkNameLabel.Text = "[center]" + NetworkName + "[/center]";
+			}
+			if(item[0] == "Address Space"){
+				AddressSpace = item[1];
+				addressSpaceLabel.Text = "[center]" + AddressSpace + "[/center]";
+			}
+		}
+		popUpMenu.Close();
+	}
+
+	private void OnPopUpMenuCancel(){
+		popUpMenu.Close();
+	}
+
+    public void HasFocus()
 	{
 		GD.Print("Has Focus");
-		isFocus = true;
+		IsFocus = true;
 
 	}
 	public void LostFocus()
 	{
 		GD.Print("Lost Focus");
-		isFocus = false;
+		IsFocus = false;
 	}
 
 	public void OnClick(Node viewport, InputEvent @event, int shape_idx){
@@ -65,7 +97,7 @@ public partial class NetworkNode : Node2D, IDraggable
 		{
 			return;
 		}
-		if(isFocus && !IsShadow)
+		if(IsFocus && !IsShadow)
 		{
 			var mouseEvent = @event as InputEventMouseButton;
 			if(mouseEvent is null)
@@ -75,9 +107,7 @@ public partial class NetworkNode : Node2D, IDraggable
 			if(mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed){
 				GD.Print("Clicked");
 				//Create new popup
-				var popup = GD.Load<PackedScene>("res://Prefabs/pop_up_create_node.tscn").Instantiate();
-				popup.Set("Values", new string[]{"Network Name", "Address Space"});
-				Screen.AddChild(popup);
+				Place();
 			}
 
 		}
