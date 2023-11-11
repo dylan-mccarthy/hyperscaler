@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=3 uid="uid://blj7skqch7cig"]
+
+[ext_resource type="Script" path="res://Scripts/popups/PopUpMenuNetwork.cs" id="1_hs5uy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ih8a2"]
+bg_color = Color(0.184314, 0.184314, 0.184314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jtksk"]
+bg_color = Color(0.184314, 0.184314, 0.184314, 1)
+
+[node name="PopUpMenuNetwork" type="Control" node_paths=PackedStringArray("CreateLinkButton", "DeleteButton")]
+custom_minimum_size = Vector2(130, 85)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1022.0
+offset_bottom = -563.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hs5uy")
+CreateLinkButton = NodePath("VBoxContainer/ButtonPanel/CreateLinkButton")
+DeleteButton = NodePath("VBoxContainer/ButtonPanel2/Delete")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 130.0
+offset_bottom = 80.0
+
+[node name="ButtonPanel" type="Panel" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ih8a2")
+
+[node name="CreateLinkButton" type="MenuButton" parent="VBoxContainer/ButtonPanel"]
+layout_mode = 2
+offset_top = 4.0
+offset_right = 130.0
+offset_bottom = 40.0
+size_flags_vertical = 3
+text = "Create Link"
+
+[node name="ButtonPanel2" type="Panel" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_jtksk")
+
+[node name="Delete" type="MenuButton" parent="VBoxContainer/ButtonPanel2"]
+layout_mode = 2
+offset_top = 4.0
+offset_right = 130.0
+offset_bottom = 40.0
+size_flags_vertical = 3
+text = "Delete"
+
+[connection signal="pressed" from="VBoxContainer/ButtonPanel/CreateLinkButton" to="." method="_on_CreateLinkButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonPanel2/Delete" to="." method="_on_DeleteButton_pressed"]

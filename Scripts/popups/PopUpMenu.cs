@@ -7,6 +7,10 @@ public partial class PopUpMenu : Control
 	private VBoxContainer _vContainer;
 	public Button CancelButton;
 	public Button SubmitButton;
+
+	public GameNode Node { get; set; }
+	public bool IsShadow { get; set; }
+
 	[Signal]
 	public delegate void SubmitButtonPressedEventHandler();
 	[Signal]

@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class NetworkNode : Placeable, IDraggable
+public partial class NetworkNode : GameNode, IPlaceable, IDraggable
 {
 	[ExportGroup("Labels")]
 	[Export]
@@ -10,9 +10,6 @@ public partial class NetworkNode : Placeable, IDraggable
 	[ExportGroup("Labels")]
 	[Export]
 	public string AddressSpace { get; set; }
-
-	private Node2D Screen;
-	private GameManager gameManager;
 
 	private PopUpMenu popUpMenu;
 
@@ -23,20 +20,20 @@ public partial class NetworkNode : Placeable, IDraggable
 	[Export]
 	public RichTextLabel addressSpaceLabel;
 
+	public bool IsShadow { get; set; }
+	public bool IsPlaced { get; set; } = false;
+	public bool IsFocus { get; set; }
+
+	[Signal]
+	public delegate void NewNodePlacedEventHandler(NetworkNode placeable);
+
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		if (Screen == null)
-		{
-			Screen = GetNode<Node2D>("/root/GameScreen");
-		}
-		if (gameManager == null)
-		{
-			gameManager = GetNode<GameManager>("/root/GameScreen/GameManager");
-		}
-		gameManager.RegisterPlaceableNode(this);
 		networkNameLabel.Text = "[center]" + NetworkName + "[/center]";
 		addressSpaceLabel.Text = "[center]" + AddressSpace + "[/center]";
+		base._Ready();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -45,6 +42,7 @@ public partial class NetworkNode : Placeable, IDraggable
 		if(IsShadow){
 			this.Position = GetGlobalMousePosition();
 		}
+		base._Process(delta);
 	}
 
 	public void Place(){
@@ -64,7 +62,9 @@ public partial class NetworkNode : Placeable, IDraggable
 		popUpMenu.CancelButton.Pressed += OnPopUpMenuCancel;
 		popUpMenu.AddPopUpMenuItem("networkName","Network Name", NetworkName);
 		popUpMenu.AddPopUpMenuItem("addressSpace","Address Space", AddressSpace);
-		gameManager.PopUpActive = true;
+		popUpMenu.Node = this;
+		popUpMenu.IsShadow = IsShadow;
+		GameManager.PopUpActive = true;
 	}
 
 	private void OnPopUpMenuSubmit(){
@@ -88,25 +88,39 @@ public partial class NetworkNode : Placeable, IDraggable
 
 		if(NetworkName != "" && AddressSpace != "")
 		{
+			IsPlaced = true;
 			popUpMenu.Close();
-			gameManager.PopUpActive = false;
+			GameManager.PopUpActive = false;
 		}
 	}
 
 	private void OnPopUpMenuCancel(){
 		popUpMenu.Close();
-		gameManager.PopUpActive = false;
+		GameManager.LockUI.Start();
+		if(!IsPlaced)
+		{
+			QueueFree();
+		}
+		
+	}
+
+	private void OpenMenu()
+	{
+		var menuPopUp = GD.Load<PackedScene>("res://Prefabs/PopUpMenuNetwork.tscn").Instantiate() as PopUpMenuNetwork;
+		Screen.AddChild(menuPopUp);
+		//Open Menu at cursor
+		menuPopUp.Position = GetGlobalMousePosition();
+		menuPopUp.GameManager = GameManager;
+		menuPopUp.Parent = this;
 	}
 
     public void HasFocus()
 	{
-		GD.Print("Has Focus");
 		IsFocus = true;
 
 	}
 	public void LostFocus()
 	{
-		GD.Print("Lost Focus");
 		IsFocus = false;
 	}
 
@@ -115,7 +129,7 @@ public partial class NetworkNode : Placeable, IDraggable
 		{
 			return;
 		}
-		if(IsFocus && !IsShadow && !gameManager.PopUpActive)
+		if(IsFocus && !IsShadow && !GameManager.PopUpActive && !GameManager.DrawLine)
 		{
 			var mouseEvent = @event as InputEventMouseButton;
 			if(mouseEvent is null)
@@ -123,11 +137,25 @@ public partial class NetworkNode : Placeable, IDraggable
 				return;
 			}
 			if(mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed){
-				GD.Print("Clicked");
 				//Create new popup
 				OpenPopUp();
 			}
-
+			if(mouseEvent.ButtonIndex == MouseButton.Right && mouseEvent.Pressed){
+				//Create new popup
+				OpenMenu();
+			}
+		}
+		if(IsFocus && !IsShadow && !GameManager.PopUpActive && GameManager.DrawLine)
+		{
+			var mouseEvent = @event as InputEventMouseButton;
+			if(mouseEvent is null)
+			{
+				return;
+			}
+			if(mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed){
+				//Create new popup
+				GameManager.Link(this);
+			}
 		}
 	}
 }

@@ -1,26 +1,29 @@
 [gd_scene load_steps=4 format=3 uid="uid://b0465tcbmx8x2"]
 
-[ext_resource type="Texture2D" uid="uid://ds0uj5mpi6ayt" path="res://Graphics/Icons/Network.png" id="1_8csly"]
-[ext_resource type="Script" path="res://Scripts/NetworkNode.cs" id="2_1erbl"]
+[ext_resource type="Texture2D" uid="uid://c0exwosj47tqp" path="res://Graphics/Icons/NetworkV4.png" id="1_bjrrb"]
+[ext_resource type="Script" path="res://Scripts/nodes/NetworkNode.cs" id="2_0l7su"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q68ua"]
-size = Vector2(115.87, 207)
+size = Vector2(115.87, 127)
 
 [node name="NetworkNode" type="Sprite2D" node_paths=PackedStringArray("networkNameLabel", "addressSpaceLabel")]
-position = Vector2(122, 114)
-scale = Vector2(0.353846, 0.304348)
-texture = ExtResource("1_8csly")
-script = ExtResource("2_1erbl")
+texture = ExtResource("1_bjrrb")
+script = ExtResource("2_0l7su")
 NetworkName = "NetworkName"
 AddressSpace = "0.0.0.0/0"
 networkNameLabel = NodePath("NameLabel")
 addressSpaceLabel = NodePath("AddressLabel")
 
 [node name="NameLabel" type="RichTextLabel" parent="."]
-offset_left = -82.0
-offset_top = -105.0
-offset_right = 88.0
-offset_bottom = -65.0
+clip_contents = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = -65.0
+offset_right = 20.0
+offset_bottom = -35.0
+grow_horizontal = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 21
 bbcode_enabled = true
@@ -30,10 +33,17 @@ scroll_active = false
 autowrap_mode = 0
 
 [node name="AddressLabel" type="RichTextLabel" parent="."]
-offset_left = -62.1739
-offset_top = 78.8571
-offset_right = 64.8261
-offset_bottom = 118.857
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -95.0
+offset_right = -1.0
+offset_bottom = -65.0
+grow_horizontal = 2
+grow_vertical = 0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
@@ -45,7 +55,7 @@ autowrap_mode = 0
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(1.41309, -1.64288)
+position = Vector2(1.41309, -0.5)
 shape = SubResource("RectangleShape2D_q68ua")
 
 [connection signal="input_event" from="Area2D" to="." method="OnClick"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://jpghyp7t5tfj"]
 
 [ext_resource type="Texture2D" uid="uid://by14jguxo6sxe" path="res://Graphics/Backgrounds/BackgroundPopUp.png" id="1_elwan"]
-[ext_resource type="Script" path="res://Scripts/PopUpMenu.cs" id="1_vxpx0"]
+[ext_resource type="Script" path="res://Scripts/popups/PopUpMenu.cs" id="1_pgdfh"]
 
 [node name="PopUpMenu" type="Control"]
 layout_mode = 3
@@ -12,7 +12,7 @@ offset_right = -792.0
 offset_bottom = -446.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_vxpx0")
+script = ExtResource("1_pgdfh")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 0

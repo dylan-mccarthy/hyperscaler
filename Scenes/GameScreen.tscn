@@ -1,41 +1,50 @@
-[gd_scene load_steps=10 format=3 uid="uid://c486h7igstcto"]
+[gd_scene load_steps=11 format=3 uid="uid://c486h7igstcto"]
 
 [ext_resource type="Texture2D" uid="uid://b426ikhy6t4dh" path="res://Graphics/Backgrounds/Background.png" id="1_v84pg"]
-[ext_resource type="Texture2D" uid="uid://ds0uj5mpi6ayt" path="res://Graphics/Icons/Network.png" id="2_a3uwh"]
 [ext_resource type="Texture2D" uid="uid://b2bpe1fxowckd" path="res://Graphics/Icons/Ingress.png" id="2_l7hxg"]
-[ext_resource type="Script" path="res://Scripts/GameManager.cs" id="2_yikls"]
-[ext_resource type="Texture2D" uid="uid://buoqaid3tavq8" path="res://Graphics/Icons/Router.png" id="3_6jykv"]
-[ext_resource type="Script" path="res://Scripts/ToolBar.cs" id="3_pgq0k"]
+[ext_resource type="Script" path="res://Scripts/managers/GameManager.cs" id="2_lkmi5"]
+[ext_resource type="Script" path="res://Scripts/managers/ToolBar.cs" id="3_vla1q"]
+[ext_resource type="Texture2D" uid="uid://c0exwosj47tqp" path="res://Graphics/Icons/NetworkV4.png" id="4_vtm1f"]
 [ext_resource type="Texture2D" uid="uid://dt1rr3n7n7dml" path="res://Graphics/Icons/Server.png" id="5_44qt5"]
+[ext_resource type="Texture2D" uid="uid://cux01i6yfj4df" path="res://Graphics/Icons/RouterV4.png" id="5_vax54"]
 [ext_resource type="Texture2D" uid="uid://dns63er715mit" path="res://Graphics/Icons/Storage.png" id="6_xf4b8"]
-[ext_resource type="PackedScene" uid="uid://b0465tcbmx8x2" path="res://Prefabs/network_node.tscn" id="7_gn2e6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eh8k6"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w8rc8"]
+bg_color = Color(0.862745, 0.862745, 0.862745, 1)
 
 [node name="GameScreen" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(575.75, 323.5)
 scale = Vector2(0.898828, 0.898611)
 texture = ExtResource("1_v84pg")
 
-[node name="GameManager" type="Node" parent="."]
-script = ExtResource("2_yikls")
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("Screen")]
+script = ExtResource("2_lkmi5")
+Screen = NodePath("..")
 
 [node name="ToolBar" type="Panel" parent="."]
 offset_left = 19.0
 offset_top = 533.0
 offset_right = 1131.0
 offset_bottom = 638.0
-script = ExtResource("3_pgq0k")
+script = ExtResource("3_vla1q")
 
 [node name="TabContainer" type="TabContainer" parent="ToolBar"]
 layout_mode = 0
-offset_left = 1.0
+offset_left = 3.0
 offset_top = -28.0
-offset_right = 1115.0
-offset_bottom = 103.0
+offset_right = 1109.0
+offset_bottom = 101.0
 
 [node name="Networking" type="Panel" parent="ToolBar/TabContainer"]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eh8k6")
 
 [node name="HFlowContainer" type="HBoxContainer" parent="ToolBar/TabContainer/Networking"]
 layout_mode = 0
@@ -45,15 +54,48 @@ offset_right = 577.0
 offset_bottom = 154.0
 scale = Vector2(0.5, 0.5)
 
-[node name="NetworkIcon" type="TextureButton" parent="ToolBar/TabContainer/Networking/HFlowContainer"]
+[node name="Network" type="Panel" parent="ToolBar/TabContainer/Networking/HFlowContainer"]
+custom_minimum_size = Vector2(130, 130)
 layout_mode = 2
-tooltip_text = "Network"
-texture_normal = ExtResource("2_a3uwh")
+theme_override_styles/panel = SubResource("StyleBoxFlat_w8rc8")
 
-[node name="RouterIcon" type="TextureButton" parent="ToolBar/TabContainer/Networking/HFlowContainer"]
+[node name="NetworkIcon" type="TextureButton" parent="ToolBar/TabContainer/Networking/HFlowContainer/Network"]
 layout_mode = 2
+offset_right = 130.0
+offset_bottom = 130.0
+tooltip_text = "Network"
+texture_normal = ExtResource("4_vtm1f")
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="ToolBar/TabContainer/Networking/HFlowContainer/Network"]
+layout_mode = 0
+offset_top = 117.0
+offset_right = 130.0
+offset_bottom = 140.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Virtual Network"
+horizontal_alignment = 1
+
+[node name="Router" type="Panel" parent="ToolBar/TabContainer/Networking/HFlowContainer"]
+custom_minimum_size = Vector2(130, 130)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_w8rc8")
+
+[node name="RouterIcon" type="TextureButton" parent="ToolBar/TabContainer/Networking/HFlowContainer/Router"]
+layout_mode = 2
+offset_right = 130.0
+offset_bottom = 139.0
 tooltip_text = "Router"
-texture_normal = ExtResource("3_6jykv")
+texture_normal = ExtResource("5_vax54")
+
+[node name="Label" type="Label" parent="ToolBar/TabContainer/Networking/HFlowContainer/Router"]
+layout_mode = 0
+offset_top = 117.0
+offset_right = 130.0
+offset_bottom = 140.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Router"
+horizontal_alignment = 1
 
 [node name="Ingress" type="Panel" parent="ToolBar/TabContainer"]
 visible = false
@@ -78,7 +120,5 @@ position = Vector2(109.875, 47.375)
 scale = Vector2(0.361511, 0.339404)
 texture = ExtResource("6_xf4b8")
 
-[node name="NetworkNode" parent="." instance=ExtResource("7_gn2e6")]
-
-[connection signal="button_down" from="ToolBar/TabContainer/Networking/HFlowContainer/NetworkIcon" to="ToolBar" method="OnIconButtonDown" binds= [NodePath(".")]]
-[connection signal="button_up" from="ToolBar/TabContainer/Networking/HFlowContainer/NetworkIcon" to="ToolBar" method="OnIconButtonUp" binds= [NodePath(".")]]
+[connection signal="button_down" from="ToolBar/TabContainer/Networking/HFlowContainer/Network/NetworkIcon" to="ToolBar" method="OnIconButtonDown" binds= [NodePath(".")]]
+[connection signal="button_up" from="ToolBar/TabContainer/Networking/HFlowContainer/Network/NetworkIcon" to="ToolBar" method="OnIconButtonUp" binds= [NodePath(".")]]

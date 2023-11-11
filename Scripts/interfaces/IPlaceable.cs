@@ -1,6 +1,6 @@
 using Godot;
 
-public abstract partial class Placeable : Node2D
+public interface IPlaceable
 {
     [Signal]
     public delegate void NewNodePlacedEventHandler(NetworkNode placeable);
