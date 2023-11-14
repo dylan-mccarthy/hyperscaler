@@ -41,6 +41,15 @@ public partial class PopUpMenu : Control
 		
 	}
 
+	public void AddPopUpMenuList(string menuName)
+	{
+		var newPopUpMenuList = GD.Load<PackedScene>("res://Prefabs/PopUpMenuList.tscn").Instantiate() as PopUpMenuList;
+		newPopUpMenuList.Name = menuName;
+		newPopUpMenuList.SizeFlagsVertical = SizeFlags.ExpandFill;
+		newPopUpMenuList.SizeFlagsHorizontal = SizeFlags.Fill;
+		_vContainer.AddChild(newPopUpMenuList);
+	}
+
 	public List<string[]> GetValues()
 	{
 		var values = new List<string[]>();

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://crx3rmtuppgoc"]
+
+[node name="Row" type="HBoxContainer"]
+
+[node name="SourceInput" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DestinationInput" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3

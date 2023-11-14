@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctrfi4ot25ybt"]
+
+[ext_resource type="PackedScene" uid="uid://crx3rmtuppgoc" path="res://Prefabs/PopUpMenuListItem.tscn" id="1_0otdk"]
+[ext_resource type="Script" path="res://Scripts/popups/PopUpMenuList.cs" id="1_tyyc2"]
+
+[node name="PopUpMenuList" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tyyc2")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 330.0
+offset_bottom = 160.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 330.0
+offset_bottom = 160.0
+
+[node name="Header" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="SourceLabel" type="Label" parent="Panel/VBoxContainer/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Source Range"
+
+[node name="DestinationLabel" type="Label" parent="Panel/VBoxContainer/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Destination Range"
+
+[node name="Row" parent="Panel/VBoxContainer" instance=ExtResource("1_0otdk")]
+layout_mode = 2
+
+[node name="AddRowButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 308.0
+offset_top = 124.0
+offset_right = 326.0
+offset_bottom = 155.0
+text = "+"

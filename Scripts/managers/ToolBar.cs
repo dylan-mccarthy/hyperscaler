@@ -25,10 +25,8 @@ public partial class ToolBar : Panel
 	{
 	}
 
-	public void OnIconButtonDown(string NodePath)
+	public void OnNetworkIconButtonDown()
 	{
-		GD.Print("Icon Button Down");
-
 		var newNetwork = GD.Load<PackedScene>("res://Prefabs/network_node.tscn").Instantiate() as NetworkNode;
 		newNetwork.Set("NetworkName", "");
 		newNetwork.Set("AddressSpace", "");
@@ -41,9 +39,23 @@ public partial class ToolBar : Panel
 
 	}
 
-	public void OnIconButtonUp(string NodePath)
+	public void OnNetworkIconButtonUp()
 	{
-		GD.Print("Icon Button Up");
+		_draggedNode.Place();
+	}
+
+	public void OnRouterIconButtonDown()
+	{
+		var newRouter = GD.Load<PackedScene>("res://Prefabs/routerNode.tscn").Instantiate() as RouterNode;
+		newRouter.Set("RouterName", "");
+		newRouter.Set("IsShadow", true);
+		newRouter.Name = $"RouterNode-{_gameManager.Nodes.Count}";
+		Screen.AddChild(newRouter);
+		_draggedNode = newRouter as IDraggable;
+	}
+
+	public void OnRouterIconButtonUp()
+	{
 		_draggedNode.Place();
 	}
 }

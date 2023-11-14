@@ -82,7 +82,7 @@ public partial class GameManager : Node
 			Links.Remove(linkName);
 		}
 		catch(Exception e){
-			GD.Print("Link not found");
+			GD.Print($"Link not found:{e.Message}");
 		}
 	}
 

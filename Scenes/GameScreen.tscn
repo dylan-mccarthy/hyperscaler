@@ -120,5 +120,7 @@ position = Vector2(109.875, 47.375)
 scale = Vector2(0.361511, 0.339404)
 texture = ExtResource("6_xf4b8")
 
-[connection signal="button_down" from="ToolBar/TabContainer/Networking/HFlowContainer/Network/NetworkIcon" to="ToolBar" method="OnIconButtonDown" binds= [NodePath(".")]]
-[connection signal="button_up" from="ToolBar/TabContainer/Networking/HFlowContainer/Network/NetworkIcon" to="ToolBar" method="OnIconButtonUp" binds= [NodePath(".")]]
+[connection signal="button_down" from="ToolBar/TabContainer/Networking/HFlowContainer/Network/NetworkIcon" to="ToolBar" method="OnNetworkIconButtonDown"]
+[connection signal="button_up" from="ToolBar/TabContainer/Networking/HFlowContainer/Network/NetworkIcon" to="ToolBar" method="OnNetworkIconButtonUp"]
+[connection signal="button_down" from="ToolBar/TabContainer/Networking/HFlowContainer/Router/RouterIcon" to="ToolBar" method="OnRouterIconButtonDown"]
+[connection signal="button_up" from="ToolBar/TabContainer/Networking/HFlowContainer/Router/RouterIcon" to="ToolBar" method="OnRouterIconButtonUp"]
