@@ -24,6 +24,18 @@ public abstract partial class GameNode : Node2D
 	public void Unlink(GameNode target)
 	{
 		Links.Remove(target);
+        GameManager.DeleteLink($"link-{this.Name}-{target.Name}");
 	}
+
+    public void Delete()
+    {
+        foreach (var link in Links)
+        {
+            link.Unlink(this);
+            GameManager.DeleteLink($"link-{this.Name}-{link.Name}");
+        }
+        GameManager.UnRegisterGameNode(this);
+        QueueFree();
+    }
     
 }

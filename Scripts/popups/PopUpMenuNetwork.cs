@@ -9,12 +9,13 @@ public partial class PopUpMenuNetwork : Control
 	[Export]
 	public Button DeleteButton;
 
-	public GameNode Parent {get; set;}
+	public GameNode Source {get; set;}
 
 	public GameManager GameManager {get; set;}
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		GameManager = GetNode<GameManager>("/root/GameScreen/GameManager");
 		GameManager.PopUpActive = true;
 	}
 
@@ -25,7 +26,7 @@ public partial class PopUpMenuNetwork : Control
 
 	private void _on_CreateLinkButton_pressed()
 	{
-		GameManager.StartDrawLine(Parent);
+		GameManager.StartDrawLine(Source);
 		GetParent().RemoveChild(this);
 		GameManager.LockUI.Start();
 		QueueFree();
@@ -33,6 +34,10 @@ public partial class PopUpMenuNetwork : Control
 
 	private void _on_DeleteButton_pressed()
 	{
+		Source.Delete();
+		GetParent().RemoveChild(this);
+		GameManager.LockUI.Start();
+		QueueFree();
 	}
 
 	public override void _Input(InputEvent @event)

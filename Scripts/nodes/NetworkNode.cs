@@ -111,7 +111,7 @@ public partial class NetworkNode : GameNode, IPlaceable, IDraggable
 		//Open Menu at cursor
 		menuPopUp.Position = GetGlobalMousePosition();
 		menuPopUp.GameManager = GameManager;
-		menuPopUp.Parent = this;
+		menuPopUp.Source = this;
 	}
 
     public void HasFocus()

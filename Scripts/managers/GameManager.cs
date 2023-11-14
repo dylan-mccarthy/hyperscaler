@@ -22,6 +22,8 @@ public partial class GameManager : Node
 
 	public GameNode SelectedNode { get; set; }
 
+	public Dictionary<string, Line2D> Links { get; set; }
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -30,6 +32,7 @@ public partial class GameManager : Node
 			Screen = GetNode<Node2D>("/root/GameScreen");
 		}
 		Nodes = new List<GameNode>();
+		Links = new Dictionary<string, Line2D>();
 		LockUI = new Timer();
 		LockUI.OneShot = true;
 		LockUI.WaitTime = 0.5f;
@@ -63,10 +66,24 @@ public partial class GameManager : Node
 		line.AddPoint(node.Position + (SelectedNode.Position - node.Position).Normalized() * 80);
 		line.DefaultColor = new Color(0, 0, 0, 1);
 		line.Width = 4;
-		line.Name = $"link-{SelectedNode.Name}-{node.Name}";
+		var linkName = $"link-{SelectedNode.Name}-{node.Name}";
+		line.Name = linkName;
+		Links.Add(linkName, line);
 		Screen.AddChild(line);
 		DrawLine = false;
 		_line.QueueFree();
+	}
+
+	public void DeleteLink(string linkName)
+	{
+		try{
+			var link = Links[linkName];
+			Screen.RemoveChild(link);
+			Links.Remove(linkName);
+		}
+		catch(Exception e){
+			GD.Print("Link not found");
+		}
 	}
 
 
